@@ -55,10 +55,97 @@
 #         }
 # =============================================================================
 
-# TODO(role-3) : aws_lb
+# role-3 : aws_lb
+resource "aws_lb" "main" {
+  name               = "${local.name_prefix}-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [var.alb_security_group_id]
+  subnets            = local.public_subnet_ids_list
 
-# TODO(role-3) : aws_lb_target_group
+  # Protection contre destruction accidentelle en prod
+  # FALSE en dev pour que terraform destroy fonctionne sans souci
+  enable_deletion_protection = false
 
-# TODO(role-3) : aws_lb_listener "https" (default_action = forward target_group)
+  # Recommandations AWS / tfsec
+  drop_invalid_header_fields = true
+  enable_http2               = true
 
-# TODO(role-3) : aws_lb_listener "http_redirect" (default_action = redirect to 443)
+  # Access logs : on ecrit dans le bucket fourni par le Role 4 (Data)
+  access_logs {
+    bucket  = var.s3_logs_bucket_name
+    prefix  = "alb"
+    enabled = true
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-alb"
+  })
+}
+
+# role-3: aws_lb_target_group
+
+resource "aws_lb_target_group" "app" {
+  name        = "${local.name_prefix}-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "instance"
+
+  # Deregistration delay : temps avant retrait d une EC2 degradee
+  deregistration_delay = 30
+
+  health_check {
+    enabled             = true
+    path                = "/status.php"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    matcher             = "200"
+    interval            = 30
+    timeout             = 10
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-tg"
+  })
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+# role-3 : aws_lb_listener "https" (default_action = forward target_group)
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = 443
+  protocol          = "HTTPS"
+  # Politique TLS moderne (TLS 1.2 et 1.3, pas de SSLv3/TLS1.0)
+  ssl_policy      = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn = aws_acm_certificate.self_signed.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+
+  tags = local.common_tags
+}
+# role-3 : aws_lb_listener "http_redirect" (default_action = redirect to 443)
+
+resource "aws_lb_listener" "http_redirect" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+
+  tags = local.common_tags
+}

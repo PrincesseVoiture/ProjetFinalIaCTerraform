@@ -15,11 +15,11 @@
 
 set -euo pipefail
 
-USERNAME="${USERNAME:-kolab-formation}"
-REGION="${REGION:-eu-west-1}"
+USERNAME="equipe6"
+REGION="${REGION:-eu-west-3}"
 
-BUCKET="tf-state-${USERNAME}-kolab"
-KMS_ALIAS="alias/tf-state-${USERNAME}"
+BUCKET="tf-state-kolab-${USERNAME}"
+KMS_ALIAS="alias/tf-state-kolab-${USERNAME}"
 
 echo "==============================================="
 echo " Bootstrap state Terraform Kolab"
