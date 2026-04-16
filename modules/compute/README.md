@@ -31,8 +31,8 @@ Consultez [role-3-compute.md](../../../cours/jour5/tp05-team-nextcloud/role-3-co
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.2.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.70 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | ~> 4.0 |
 
 ## Modules
 

@@ -29,8 +29,8 @@ Consultez [role-4-data.md](../../../cours/jour5/tp05-team-nextcloud/role-4-data.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.8.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.6 |
 
 ## Modules
 
@@ -65,7 +65,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_db_allocated_storage"></a> [db\_allocated\_storage](#input\_db\_allocated\_storage) | Storage initial RDS en Go. | `number` | `20` | no |
-| <a name="input_db_engine_version"></a> [db\_engine\_version](#input\_db\_engine\_version) | Version PostgreSQL. | `string` | `"16.4"` | no |
+| <a name="input_db_engine_version"></a> [db\_engine\_version](#input\_db\_engine\_version) | Version PostgreSQL. | `string` | `"16"` | no |
 | <a name="input_db_instance_class"></a> [db\_instance\_class](#input\_db\_instance\_class) | Classe d instance RDS. db.t3.micro = plus petit dispo Multi-AZ. | `string` | `"db.t3.micro"` | no |
 | <a name="input_db_max_allocated_storage"></a> [db\_max\_allocated\_storage](#input\_db\_max\_allocated\_storage) | Storage max (auto-scaling gp3) pour absorber les uploads Nextcloud. | `number` | `100` | no |
 | <a name="input_db_password_secret_arn"></a> [db\_password\_secret\_arn](#input\_db\_password\_secret\_arn) | ARN du secret Secrets Manager contenant le mot de passe DB. | `string` | n/a | yes |
