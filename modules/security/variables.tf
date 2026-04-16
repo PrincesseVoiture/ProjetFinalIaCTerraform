@@ -23,3 +23,7 @@ variable "allowed_admin_cidr" {
   type        = string
   default     = "0.0.0.0/0"
 }
+
+variable "s3_primary_bucket_arn" {
+  type = string
+}
