@@ -129,7 +129,7 @@ resource "aws_launch_template" "app" {
     admin_password_secret_arn = var.admin_password_secret_arn
     s3_primary_bucket_name    = var.s3_primary_bucket_name
     alb_dns_name              = aws_lb.main.dns_name
-    aws_region                = "eu-west-1"
+    aws_region                = "eu-west-3"
   }))
 
   # Tags propages aux instances creees par l ASG

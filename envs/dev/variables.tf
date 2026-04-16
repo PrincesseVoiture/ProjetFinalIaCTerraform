@@ -4,7 +4,7 @@ variable "aws_region" {
   default     = "eu-west-3"
 
   validation {
-    condition     = var.aws_region == "eu-west-1"
+    condition     = var.aws_region == "eu-west-3"
     error_message = "La region doit etre eu-west-3 (exigence T1 du CdC)."
   }
 }

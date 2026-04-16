@@ -48,12 +48,12 @@ module "networking" {
 module "security" {
   source = "../../modules/security"
 
-  project_name       = var.project_name
-  environment        = var.environment
-  vpc_id             = module.networking.vpc_id
-  vpc_cidr           = module.networking.vpc_cidr
-  allowed_admin_cidr = var.allowed_admin_cidr
-  #s3_primary_bucket_arn = module.data.s3_primary_bucket_arn
+  project_name          = var.project_name
+  environment           = var.environment
+  vpc_id                = module.networking.vpc_id
+  vpc_cidr              = module.networking.vpc_cidr
+  allowed_admin_cidr    = var.allowed_admin_cidr
+  s3_primary_bucket_arn = module.data.s3_primary_bucket_arn
   #s3_logs_bucket_arn    = module.data.s3_logs_bucket_arn
 
 }
